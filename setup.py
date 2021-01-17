@@ -39,9 +39,9 @@ setup(
     python_requires='>=3.5, <4',
     install_requires=['beautifulsoup4', 'pycryptodome', 'requests'],
     project_urls={
-        'Bug Reports': 'https://github.com/billchenchina/yqxx/issues',
+        'Bug Reports': 'https://github.com/billchenchina/hitutil/issues',
         # 'Funding': 'https://donate.pypi.org',
         # 'Say Thanks!': 'http://saythanks.io/to/example',
-        'Source': 'https://github.com/billchenchina/yqxx/',
+        'Source': 'https://github.com/billchenchina/hitutil/',
     },
 )
