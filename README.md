@@ -8,7 +8,7 @@
 
 `ids.idslogin()` 模拟统一身份认证登陆, 返回一个已登陆的 `requests.Session`.
 
-```python3
+```python
 from hit import ids
 session = ids.idslogin('USERNAME', 'PASSWORD')
 session.get('http://jwes.hit.edu.cn/queryWsyyIndex') # 登陆本科生网上服务系统
