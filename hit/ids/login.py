@@ -19,6 +19,8 @@ def idslogin(username: str, password: str, **kwargs) -> Session:
     Keyword Arguments:
         s (requests.Session)
         captchaResponse (str)
+        need_check_resp (boolen)
+        check_resp_hook (function(requests.Response, *args, **kwargs))
     Returns:
         s (requests.Session): Session
     Raises:
@@ -65,4 +67,20 @@ def idslogin(username: str, password: str, **kwargs) -> Session:
     })
     if r.url != 'http://ids.hit.edu.cn/authserver/index.do':
         raise LoginFailed()
+
+    if kwargs.get('need_check_resp', False):
+        s.hooks['response'].append(
+            kwargs.get('check_resp_hook', _check_resp_hook_default_impl))
+    
     return s
+
+def _check_resp_hook_default_impl(r, *args, **kwargs):
+    """
+    Response hook for checking the error msg returned by ids
+    another way: override Requests.Resopnse.ok()
+    """
+    soup = BeautifulSoup(r.text, 'html.parser')
+    found_err_msg = soup.find('div', {'id': 'msg', 'class': 'errors'})
+    assert not found_err_msg, \
+        (f'found error msg: {found_err_msg.h2.text}, '
+         f'reason: {found_err_msg.p.text}')
