@@ -84,3 +84,4 @@ def _check_resp_hook_default_impl(r, *args, **kwargs):
     assert not found_err_msg, \
         (f'found error msg: {found_err_msg.h2.text}, '
          f'reason: {found_err_msg.p.text}')
+    return r
