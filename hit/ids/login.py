@@ -63,7 +63,7 @@ def idslogin(username: str, password: str, **kwargs) -> Session:
         "execution": soup.find('input', {'name': 'execution'})['value'],
         "_eventId": soup.find('input', {'name': '_eventId'})['value'],
         "rmShown": soup.find('input', {'name': 'rmShown'})['value'],
-        "pwdDefaultEncryptSalt": pwd_default_encrypt_salt
+        # "pwdDefaultEncryptSalt": pwd_default_encrypt_salt
     })
     if r.url != 'http://ids.hit.edu.cn/authserver/index.do':
         raise LoginFailed()
