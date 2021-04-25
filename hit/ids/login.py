@@ -77,7 +77,7 @@ def idslogin(username: str, password: str, **kwargs) -> Session:
 def _check_resp_hook_default_impl(r, *args, **kwargs):
     """
     Response hook for checking the error msg returned by ids
-    another way: override Requests.Resopnse.ok()
+    another way: override Requests.Response.ok()
     """
     soup = BeautifulSoup(r.text, 'html.parser')
     found_err_msg = soup.find('div', {'id': 'msg', 'class': 'errors'})
