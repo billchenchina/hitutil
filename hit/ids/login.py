@@ -9,6 +9,8 @@ from requests import Session
 
 from .utils import encrypt, rds
 
+import time
+
 
 def idslogin(username: str, password: str, **kwargs) -> Session:
     """Handle ids.hit.edu.cn login
@@ -34,14 +36,14 @@ def idslogin(username: str, password: str, **kwargs) -> Session:
     # get pwdDefaultEncryptSalt
     r1 = s.get('http://ids.hit.edu.cn/authserver/login')
     pwd_default_encrypt_salt = re.compile(
-        'pwdDefaultEncryptSalt = "(.*)"').search(r1.text).groups()[0]
+        'id="pwdEncryptSalt" value="(.*?)"').search(r1.text).groups()[0]
     passwordEncrypt = encrypt(
         rds(64).encode()+password.encode(), pwd_default_encrypt_salt.encode())
     # Detect Captcha
-    r2 = s.get('http://ids.hit.edu.cn/authserver/needCaptcha.html',
+    r2 = s.get('https://ids.hit.edu.cn/authserver/checkNeedCaptcha.htl',
                params={
                    'username': username,
-                   'pwdEncrypt2': 'pwdEncryptSalt'
+                   '_': round(time.time() * 1000)
                })
     if r2.text == 'true':
         if 'captchaResponse' in kwargs:
@@ -57,15 +59,15 @@ def idslogin(username: str, password: str, **kwargs) -> Session:
     r = s.post(r1.url, data={
         "username": username,
         "password": passwordEncrypt,
-        "captchaResponse": captchaResponse,
+        "captcha": captchaResponse,
         "lt": soup.find('input', {'name': 'lt'})['value'],
         "dllt": soup.find('input', {'name': 'dllt'})['value'],
         "execution": soup.find('input', {'name': 'execution'})['value'],
         "_eventId": soup.find('input', {'name': '_eventId'})['value'],
-        "rmShown": soup.find('input', {'name': 'rmShown'})['value'],
+        "cllt": "userNameLogin"
         # "pwdDefaultEncryptSalt": pwd_default_encrypt_salt
     })
-    if r.url != 'http://ids.hit.edu.cn/authserver/index.do':
+    if r.url != 'https://ids.hit.edu.cn/personalInfo/personCenter/index.html':
         raise LoginFailed()
 
     if kwargs.get('need_check_resp', False):
