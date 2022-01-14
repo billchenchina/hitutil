@@ -34,7 +34,7 @@ def idslogin(username: str, password: str, **kwargs) -> Session:
     else:
         s = Session()
     # get pwdDefaultEncryptSalt
-    r1 = s.get('http://ids.hit.edu.cn/authserver/login')
+    r1 = s.get('https://ids.hit.edu.cn/authserver/login')
     pwd_default_encrypt_salt = re.compile(
         'id="pwdEncryptSalt" value="(.*?)"').search(r1.text).groups()[0]
     passwordEncrypt = encrypt(
