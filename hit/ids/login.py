@@ -10,6 +10,7 @@ from requests import Session
 from .utils import encrypt, rds
 
 import time
+import json
 
 
 def idslogin(username: str, password: str, **kwargs) -> Session:
@@ -45,7 +46,7 @@ def idslogin(username: str, password: str, **kwargs) -> Session:
                    'username': username,
                    '_': round(time.time() * 1000)
                })
-    if r2.text == 'true':
+    if json.loads(r2.text)['isNeed']:
         if 'captchaResponse' in kwargs:
             captchaResponse = kwargs['captchaResponse']
         else:
@@ -67,7 +68,8 @@ def idslogin(username: str, password: str, **kwargs) -> Session:
         "cllt": "userNameLogin"
         # "pwdDefaultEncryptSalt": pwd_default_encrypt_salt
     })
-    if r.url != 'https://ids.hit.edu.cn/personalInfo/personCenter/index.html':
+    if r.url not in ['https://ids.hit.edu.cn/personalInfo/personCenter/index.html', 
+                     'https://ids.hit.edu.cn/personalInfo/personalMobile/index.html']:
         raise LoginFailed()
 
     if kwargs.get('need_check_resp', False):
