@@ -36,8 +36,8 @@ def idslogin(username: str, password: str, **kwargs) -> Session:
         s = Session()
     # get pwdDefaultEncryptSalt
     r1 = s.get('https://ids.hit.edu.cn/authserver/login')
-    pwd_default_encrypt_salt = re.compile(
-        'id="pwdEncryptSalt" value="(.*?)"').search(r1.text).groups()[0]
+    soup = BeautifulSoup(r1.text, 'html.parser').select_one('#pwdFromId')
+    pwd_default_encrypt_salt = soup.find('input', {'id': 'pwdEncryptSalt'})['value']
     passwordEncrypt = encrypt(
         rds(64).encode()+password.encode(), pwd_default_encrypt_salt.encode())
     # Detect Captcha
@@ -56,7 +56,6 @@ def idslogin(username: str, password: str, **kwargs) -> Session:
             raise CaptchaNeeded(s, r.content)
     else:
         captchaResponse = None
-    soup = BeautifulSoup(r1.text, 'html.parser')
     r = s.post(r1.url, data={
         "username": username,
         "password": passwordEncrypt,
@@ -65,7 +64,7 @@ def idslogin(username: str, password: str, **kwargs) -> Session:
         "dllt": soup.find('input', {'name': 'dllt'})['value'],
         "execution": soup.find('input', {'name': 'execution'})['value'],
         "_eventId": soup.find('input', {'name': '_eventId'})['value'],
-        "cllt": "userNameLogin"
+        "cllt": soup.find('input', {'name': 'cllt'})['value'],
         # "pwdDefaultEncryptSalt": pwd_default_encrypt_salt
     })
     if r.url not in ['https://ids.hit.edu.cn/personalInfo/personCenter/index.html', 
