@@ -47,13 +47,14 @@ def idslogin(username: str, password: str, **kwargs) -> Session:
                    '_': round(time.time() * 1000)
                })
     if json.loads(r2.text)['isNeed']:
-        if 'captchaResponse' in kwargs:
-            captchaResponse = kwargs['captchaResponse']
-        else:
-            r = s.get('http://ids.hit.edu.cn/authserver/captcha.html', params={
-                'ts': random.randint(0, 999)
-            })
-            raise CaptchaNeeded(s, r.content)
+        raise NotImplementedError('Captcha is unsupported currently.')
+        # if 'captchaResponse' in kwargs:
+        #     captchaResponse = kwargs['captchaResponse']
+        # else:
+        #     r = s.get('http://ids.hit.edu.cn/authserver/captcha.html', params={
+        #         'ts': random.randint(0, 999)
+        #     })
+        #     raise CaptchaNeeded(s, r.content)
     else:
         captchaResponse = None
     r = s.post(r1.url, data={
