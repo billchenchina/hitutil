@@ -6,7 +6,7 @@ import pandas as pd
 def query_by_gxh(gxh: str, semester: str, weekday: int, s: requests.sessions.Session=None):
     if s is None:
         s = requests.Session()
-    r = requests.post(url='https://wxfwdt.hit.edu.cn/app/bkskbcx/kbcxapp/getBkszkb', data={
+    r = s.post(url='https://wxfwdt.hit.edu.cn/app/bkskbcx/kbcxapp/getBkszkb', data={
         'info': json.dumps({
             'gxh': gxh,
             'zc': str(weekday),
