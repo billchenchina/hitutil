@@ -14,3 +14,20 @@ session = ids.idslogin('USERNAME', 'PASSWORD')
 session.get('http://jwes.hit.edu.cn/queryWsyyIndex') # 登陆本科生网上服务系统
 response = session.get('http://jwes.hit.edu.cn/cjcx/queryQmcj') # 查询成绩
 ```
+
+
+## timetable
+
+课表相关服务
+
+```python
+from hit import timetable
+import requests
+
+def main():
+    s = requests.Session() # 查询课表不需要ids登陆。
+    print(timetable.parse_to_df(timetable.query_by_id(s, '学号', '学期', '''周次，整数'''))) # 学期类似：'2021-2022;1' 表示秋季学期
+
+if __name__ == '__main__':
+    main()
+```
