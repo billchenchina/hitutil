@@ -37,7 +37,7 @@ setup(
     package_dir={'': '.'},
     packages=find_packages(where='.'),
     python_requires='>=3.5, <4',
-    install_requires=['beautifulsoup4', 'pycryptodome', 'requests'],
+    install_requires=['beautifulsoup4', 'pycryptodome', 'requests', 'pandas'],
     project_urls={
         'Bug Reports': 'https://github.com/billchenchina/hitutil/issues',
         # 'Funding': 'https://donate.pypi.org',
