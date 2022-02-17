@@ -20,7 +20,7 @@ def query(s: requests.sessions.Session, xnxq: str = None, sfjg: bool = None, kcm
     # 构造数据（data）
     data = {}
     data['pageXnxq'] = xnxq if xnxq else ''
-    if sfjg:
+    if sfjg is not None:
         data['pageSfjg'] = '是' if sfjg else '否'
     else:
         data['pageSfjg'] = ''
