@@ -4,7 +4,7 @@ import pandas as pd
 from bs4 import BeautifulSoup
 
 
-def query(s: requests.sessions.Session, xnxq: str = None, sfjg: bool = None, kcmc: str = None, bkcxbj: str = None, pageSize: int = 200):
+def query(s: requests.sessions.Session, xnxq: str = None, sfjg: bool = None, kcmc: str = None, bkcxbj: str = None, pageSize: int = 200) -> pd.DataFrame:
     """这个函数为你爬取结构化的成绩数据
 
     Args:

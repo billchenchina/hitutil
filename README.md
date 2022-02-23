@@ -54,7 +54,8 @@ from hit import ids
 
 def main():
     s = ids.idslogin('学号', 'ids密码')
-    score.query(s).to_csv('我的成绩.csv') # 保存结果到csv
+    transcript = score.query(s) # pandas 格式的成绩
+    transcript.to_csv('我的成绩.csv') # 保存结果到csv
 
 
 if __name__ == '__main__':
