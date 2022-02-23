@@ -41,3 +41,23 @@ if __name__ == '__main__':
 | 2020-2021;5 | 2021寒假   |
 | 2021-2022;1 | 2021秋季   |
 | ...          | ...          |
+
+
+## score
+
+成绩查询服务
+
+```python
+from hit import score
+from hit import ids
+
+
+def main():
+    s = ids.idslogin('学号', 'ids密码')
+    transcript = score.query(s) # pandas 格式的成绩
+    transcript.to_csv('我的成绩.csv') # 保存结果到csv
+
+
+if __name__ == '__main__':
+    main()
+```
